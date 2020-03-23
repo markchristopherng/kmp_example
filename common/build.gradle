@@ -1,0 +1,77 @@
+plugins {
+    id 'org.jetbrains.kotlin.multiplatform'
+    id 'org.jetbrains.kotlin.native.cocoapods'
+    id 'org.jetbrains.kotlin.plugin.serialization'
+    id 'com.android.library'
+}
+
+group = "au.com.auspost.feature.base"
+version = 1.0
+
+android {
+    compileSdkVersion 29
+    defaultConfig {
+        minSdkVersion 21
+    }
+    buildTypes {
+
+        release{
+            minifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+    }
+
+    packagingOptions {
+        exclude("META-INF/main.kotlin_module")
+        exclude("META-INF/kotlinx-serialization-runtime.kotlin_module")
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+}
+
+dependencies {
+
+    // Specify Kotlin/JVM stdlib dependency.
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
+
+    testImplementation "junit:junit:$versions.junit"
+    testImplementation "org.jetbrains.kotlin:kotlin-test"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
+}
+
+kotlin {
+
+    android()
+    iosX64("ios") {
+        binaries {
+            framework("json")
+        }
+    }
+
+    sourceSets["commonMain"].dependencies {
+        implementation(kotlin("stdlib"))
+        implementation(kotlin("stdlib-common"))
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$versions.kotlinx_serialization_runtime")
+    }
+
+   sourceSets["commonTest"].dependencies {
+       implementation(kotlin("test"))
+       implementation(kotlin("test-junit"))
+       implementation(kotlin("test-common"))
+       implementation(kotlin("test-annotations-common"))
+   }
+
+   sourceSets["iosMain"].dependencies {
+       implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$versions.kotlinx_serialization_runtime")
+   }
+
+   sourceSets["androidMain"].dependencies {
+       implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$versions.kotlinx_serialization_runtime")
+   }
+
+    sourceSets["androidMain"].dependencies {
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$versions.kotlinx_serialization_runtime")
+    }
+}

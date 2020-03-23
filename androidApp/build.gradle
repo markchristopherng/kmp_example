@@ -1,0 +1,38 @@
+plugins {
+    id 'org.jetbrains.kotlin.multiplatform'
+    id 'com.android.application'
+}
+
+android {
+    compileSdkVersion 29
+    defaultConfig {
+        applicationId = "au.com.auspost.feature.multiplatform"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode = 1
+        versionName = "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
+    }
+    packagingOptions {
+        exclude("META-INF/main.kotlin_module")
+        exclude("META-INF/kotlinx-serialization-runtime.kotlin_module")
+    }
+}
+
+kotlin {
+    android()
+}
+
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$versions.kotlinx_serialization_runtime")
+    implementation(project(":common"))
+    implementation("androidx.appcompat:appcompat:$versions.appcompat")
+    implementation("androidx.constraintlayout:constraintlayout:$versions.constraintlayout")
+    testImplementation("junit:junit:$versions.junit")
+}
